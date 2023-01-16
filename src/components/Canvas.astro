@@ -1,7 +1,11 @@
 ---
 ---
 
-<canvas id="canvas" width="800" height="800"></canvas>
+<div style="display: flex; flex-direction: row;">
+  <canvas id="canvas" width="400" height="400"></canvas>
+  <div id="my_dataviz"></div>
+</div>
+<canvas id="canvas2" width="400" height="400"></canvas>
 
 <script>
   var canvas = document.getElementById("canvas");
@@ -10,18 +14,38 @@
   var offsetX = canvasOffset.left;
   var offsetY = canvasOffset.top;
   var circleArc = Math.PI * 2;
-  let poles = [
-    // [0.25, -0.25],
-    // [2 ** 0.5 / 2, 2 ** 0.5 / 2],
-    [0, -1],
-    // [0.0, 0.5],
-    // [-1, 0],
+
+  var canvas2 = document.getElementById("canvas2");
+  var ctx2 = canvas2.getContext("2d");
+  var canvasOffset2 = canvas2.getBoundingClientRect();
+  var offsetX2 = canvasOffset2.left;
+  var offsetY2 = canvasOffset2.top;
+
+  // draw axes on canvas2
+  ctx2.beginPath();
+  ctx2.moveTo(0, canvas2.height / 2);
+  ctx2.lineTo(canvas2.width, canvas2.height / 2);
+  ctx2.moveTo(canvas2.width / 2, 0);
+  ctx2.lineTo(canvas2.width / 2, canvas2.height);
+  ctx2.lineWidth = 2;
+  ctx2.strokeStyle = "black";
+  ctx2.stroke();
+
+  let poles = [[0, 0.5]];
+  let zeros = [
+    [0, 1],
+    [0, 0.5],
   ];
-  let zeros = [[0, 1]];
-  //
+
+  var trace1 = {
+    x: [],
+    y: [],
+    mode: "markers",
+    type: "scatter",
+  };
 
   // drawing design properties
-  var knobCenterX = 300;
+  var knobCenterX = 200;
   var knobCenterY = 200;
   var knobRadius = 100;
   var knobColor = "green";
@@ -72,11 +96,12 @@
       const y = -pole[1] * knobRadius + knobCenterY;
       return [x, y];
     });
-    const zeroCoords = zeros.map((zero) => {
-      const x = zero[0] * knobRadius + knobCenterX;
-      const y = -zero[1] * knobRadius + knobCenterY;
-      return [x, y];
-    });
+    const zeroCoords =
+      zeros.map((zero) => {
+        const x = zero[0] * knobRadius + knobCenterX;
+        const y = -zero[1] * knobRadius + knobCenterY;
+        return [x, y];
+      }) || [];
 
     var indicatorX = knobRadius * Math.cos(rads) + knobCenterX;
     var indicatorY = knobRadius * Math.sin(rads) + knobCenterY;
@@ -149,7 +174,25 @@
     DrawTargets(knobCenterX, knobCenterY, "Zero", 2, 2, "blue");
 
     // magnitude = p;
-    console.log(nyquistMagnitude, nyquistAngle);
+
+    // draw the nyquist plot
+    const nyquistX = nyquistMagnitude * Math.cos(nyquistAngle);
+    const nyquistY = nyquistMagnitude * Math.sin(nyquistAngle);
+    const nyquistTheta = -rads;
+
+    trace1.x.push(nyquistX);
+    trace1.y.push(nyquistY);
+
+    function To3SigFig(num) {
+      return num.toPrecision(3);
+    }
+
+    console.log(`
+	 	${To3SigFig(nyquistMagnitude)}< ${To3SigFig(nyquistAngle)} rad \n
+		(${To3SigFig(nyquistX)},${To3SigFig(nyquistY)} )
+	`);
+
+    Plotly.newPlot("my_dataviz", [trace1]);
   }
 
   function handleMouseDown(e) {
