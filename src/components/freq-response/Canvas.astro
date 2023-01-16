@@ -17,8 +17,8 @@
 </div>
 <div class="flex flex-row bg-slate-800 mb-4">
   <div class="flex flex-col space-y-2 pb-4 m-8 bg-slate-700/80 rounded-xl">
-    <h2 class="p-4 font-semibold max-w-sm self-center">How it works</h2>
-    <p class="p-4 max-w-sm self-center">
+    <h2 class="p-2 font-semibold max-w-sm self-center">How it works</h2>
+    <p class="p-2 max-w-sm self-center">
       This is a very simple implementation of using the poles and zeros of a
       transfer function to graphically plot the frequency response of a system.
       It uses the fact that the magnitude is equal to product of the distances
@@ -26,13 +26,14 @@
       poles to the slider divider. The phase is equal to the sum of the angles
       of all zeros minuts the sum of the angles of all poles.
     </p>
-    <h2 class="p-4 font-semibold max-w-sm self-center">Limitations</h2>
-
-    <p class="p-4 max-w-sm self-center">
+    <h2 class="p-2 font-semibold max-w-sm self-center">Limitations</h2>
+    <p class="p-2 max-w-sm self-center">
       When there are repeated poles the plotting is not perfect. Additionally if
       the poles are too close to the unit circle then you will get a large
       magnitude response, hence you will need to zoom into the plot to see the
-      response.
+      response. Also I do not really trust the phase response, it seems weird.
+      Another limitation is I made this in a few hours so it is not very robust
+      / well written / designed.
     </p>
   </div>
   <div class="flex flex-col gap-3 bg-slate-800 ml-8">
