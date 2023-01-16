@@ -106,16 +106,26 @@
   }
 
   const urlSearchParams = new URLSearchParams(window.location.search);
-  const params = Object.fromEntries(urlSearchParams.entries());
-  console.log("params", params);
+  const config = JSON.parse(
+    Object.fromEntries(urlSearchParams.entries()).config
+  );
 
-  let poles: ListOfCoordinates = [
-    [1, 0],
-    [1, 0],
-    [-0.3, 0.3],
-    [-0.3, -0.3],
-  ];
-  let zeros: ListOfCoordinates = [[-1, 0]];
+  console.log(config.zeros);
+
+  const complexNumberToCartesian = (complexNumber: [number, number]) => {
+    const [mag, phase] = complexNumber;
+    return [mag * Math.cos(phase), mag * Math.sin(phase)] as Coordinate;
+  };
+
+  const mapArrayToCartesian = (array: [number, number][] | []) => {
+    if (array.length === 0) {
+      return [];
+    }
+    return array.map(complexNumberToCartesian);
+  };
+
+  let poles: ListOfCoordinates = mapArrayToCartesian(config.poles);
+  let zeros: ListOfCoordinates = mapArrayToCartesian(config.zeros);
 
   const magnitudeAndArg = (coord: Coordinate) => {
     const [x, y] = coord;

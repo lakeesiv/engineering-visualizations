@@ -2,11 +2,11 @@ import React, { useState, Fragment, useEffect } from "react";
 import { z } from "zod";
 import { Dialog, Transition } from "@headlessui/react";
 
-type Coord = [number, number];
+type ComplexNumber = [number, number];
 
 interface FreqResponseConfig {
-  poles: Coord[];
-  zeros: Coord[];
+  poles: ComplexNumber[];
+  zeros: ComplexNumber[];
 }
 
 const FreqResponseConfigSchema = z.object({
@@ -35,7 +35,7 @@ const PoleZeroSelector = () => {
       zeros: [],
     });
 
-  let [isOpen, setIsOpen] = useState(true);
+  let [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const urlSearchParams = new URLSearchParams(window.location.search);
