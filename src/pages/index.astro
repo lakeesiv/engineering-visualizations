@@ -1,12 +1,15 @@
 ---
+import Card from "../components/Card.astro";
 import Layout from "../layouts/Layout.astro";
-import Canvas from "../components/freq-response/Canvas.astro";
-import PoleZeroSelector from "../components/freq-response/PoleZeroSelector";
 ---
 
-<Layout title="Z Frequency Response">
+<Layout title="Home">
   <main>
-    <PoleZeroSelector client:only />
-    <Canvas />
+    <div class="flex flex-col w-full items-center pt-9">
+      <Card
+        title="Frequency Response of a Z-Transfer Function"
+        slug="freq-response"
+      />
+    </div>
   </main>
 </Layout>
