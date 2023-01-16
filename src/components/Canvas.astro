@@ -222,9 +222,9 @@
   }
 
   let down = false;
-  document.addEventListener("mousedown", (e) => {
+  canvas.addEventListener("mousedown", (e) => {
     down = true;
   });
-  document.addEventListener("mousemove", (e) => down && handleMouseDown(e));
-  document.addEventListener("mouseup", (e) => (down = false));
+  canvas.addEventListener("mousemove", (e) => down && handleMouseDown(e));
+  canvas.addEventListener("mouseup", (e) => (down = false));
 </script>
