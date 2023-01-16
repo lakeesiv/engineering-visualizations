@@ -13,7 +13,7 @@
       id="sweep">Sweep</button
     >
   </div>
-  <div id="nyquist" class="m-8"></div>
+  <div id="nyquist" class="m-8 bg-black"></div>
 </div>
 <div class="flex flex-col max-w-md max-h-4xl bg-slate-800">
   <div id="mag"></div>
@@ -36,6 +36,7 @@
     y: number[];
     mode: "markers";
     type: "scattergl" | "scatter";
+    text: string[] | number[];
   };
   type ExtendedWindow = Window &
     typeof globalThis & {
@@ -49,6 +50,40 @@
     phase: number[];
   };
 
+  function Plot(
+    divId: string,
+    data: Partial<Data | Trace>,
+    labels: {
+      x: string;
+      y: string;
+      title: string;
+    }
+  ) {
+    const _layout = {
+      autosize: true,
+      title: labels.title,
+      xaxis: {
+        title: labels.x,
+        color: "white",
+      },
+      yaxis: {
+        title: labels.y,
+        color: "white",
+      },
+      font: {
+        color: "white",
+      },
+      margin: { l: 50, r: 50, b: 50, t: 50 },
+
+      plot_bgcolor: "black",
+      paper_bgcolor: "black",
+    };
+    const _window = window as ExtendedWindow;
+    _window.Plotly.newPlot(divId, [data], _layout, {
+      displayLogo: false,
+    });
+  }
+
   const urlSearchParams = new URLSearchParams(window.location.search);
   const params = Object.fromEntries(urlSearchParams.entries());
   console.log("params", params);
@@ -58,10 +93,7 @@
     [0.7, 0],
     [0.7, 0],
   ];
-  let zeros: ListOfCoordinates = [
-    [-1, 0],
-    // [0.5, 0],
-  ];
+  let zeros: ListOfCoordinates = [[-1, 0]];
 
   const magnitudeAndArg = (coord: Coordinate) => {
     const [x, y] = coord;
@@ -251,33 +283,53 @@
     FrequencyResponseData.magnitude.push(nyquistMagnitude);
     FrequencyResponseData.phase.push(nyquistTheta);
 
-    (window as ExtendedWindow).Plotly.newPlot("nyquist", [
+    Plot(
+      "nyquist",
+
       {
         x: FrequencyResponseData.x,
         y: FrequencyResponseData.y,
         type: "scatter",
         mode: "markers",
         text: FrequencyResponseData.frequency,
-      } as Partial<Trace>,
-    ]);
-    (window as ExtendedWindow).Plotly.newPlot("mag", [
+      },
+      {
+        x: "Real",
+        y: "Imaginary",
+        title: "Nyquist Plot",
+      }
+    );
+
+    Plot(
+      "mag",
       {
         x: FrequencyResponseData.frequency,
         y: FrequencyResponseData.magnitude,
         type: "scatter",
         mode: "markers",
         text: FrequencyResponseData.frequency,
-      } as Partial<Trace>,
-    ]);
-    (window as ExtendedWindow).Plotly.newPlot("phase", [
+      },
+      {
+        x: "Theta",
+        y: "Magnitude",
+        title: "Magnitude Plot",
+      }
+    );
+    Plot(
+      "phase",
       {
         x: FrequencyResponseData.frequency,
         y: FrequencyResponseData.phase,
         type: "scatter",
         mode: "markers",
         text: FrequencyResponseData.frequency,
-      } as Partial<Trace>,
-    ]);
+      },
+      {
+        x: "Theta",
+        y: "Phase",
+        title: "Phase Plot",
+      }
+    );
   }
 
   function handleMouseDown(e: MouseEvent) {
