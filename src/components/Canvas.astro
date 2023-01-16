@@ -59,7 +59,7 @@
     [0.7, 0],
   ];
   let zeros: ListOfCoordinates = [
-    // [-1, 0],
+    [-1, 0],
     // [0.5, 0],
   ];
 
@@ -88,10 +88,10 @@
 
   const unitCircleCentreX = 200;
   const unitCircleCentreY = 200;
-  const unitCircleRadius = 100;
+  const unitCircleRadius = 150;
   const unitCircleBorderColor = "black";
-  const knobRadius = 5;
-  const knobColor = "yellow";
+  const knobRadius = 8;
+  const knobColor = "pink";
 
   DrawFrame(unitCircleCentreX, unitCircleCentreY); // just to get started
 
@@ -111,16 +111,16 @@
         ctx.moveTo(x + width, y - width);
         ctx.lineTo(x - width, y + width);
         ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = "blue";
+        ctx.strokeStyle = "lightblue";
         ctx.stroke();
         break;
       case "Zero":
         ctx.beginPath();
         ctx.arc(x, y, width, 0, TwoPI, false);
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "orange";
         ctx.fill();
         ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = "red";
+        ctx.strokeStyle = "orange";
         ctx.stroke();
         break;
     }
@@ -189,7 +189,7 @@
       ctx.moveTo(pole[0], pole[1]);
       ctx.lineTo(knobX, knobY);
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "red";
+      ctx.strokeStyle = "lightblue";
       ctx.stroke();
       // calculate the length of the line
       const dx = -pole[0] + knobX;
@@ -206,7 +206,7 @@
       ctx.stroke();
 
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "red";
+      ctx.strokeStyle = "lightblue";
       ctx.stroke();
 
       nyquistAngle -= poleAngle;
@@ -221,7 +221,7 @@
       ctx.moveTo(zero[0], zero[1]);
       ctx.lineTo(knobX, knobY);
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "blue";
+      ctx.strokeStyle = "orange";
       ctx.stroke();
       // calculate the length of the line
       const dx = -zero[0] + knobX;
@@ -240,8 +240,6 @@
 
       nyquistMagnitude *= length;
     });
-
-    DrawTargets(unitCircleCentreX, unitCircleCentreY, "Zero", 2, 2, "blue"); // draw the origin
 
     const nyquistX = nyquistMagnitude * Math.cos(nyquistAngle);
     const nyquistY = nyquistMagnitude * Math.sin(nyquistAngle);
