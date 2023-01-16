@@ -1,11 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card.astro";
 import Canvas from "../components/freq-response/Canvas.astro";
 import PoleZeroSelector from "../components/freq-response/PoleZeroSelector";
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="Z Frequency Response">
   <main>
     <PoleZeroSelector client:only />
     <Canvas />
