@@ -123,15 +123,15 @@ const PoleZeroSelector = () => {
                             });
                           }}
                         />
-                        <p>Phase</p>
+                        <p>Phase (Deg)</p>
 
                         <input
                           type="number"
                           className="rounded-md bg-slate-800 px-4 py-2 text-sm font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                           value={pole[1]}
-                          max={2 * 3.14}
-                          min={2 * -3.14}
-                          step={0.01}
+                          max={360}
+                          min={-360}
+                          step={1}
                           onChange={(e) => {
                             setFreqResponseConfig((prev) => {
                               const newPoles = [...prev.poles];
