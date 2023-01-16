@@ -2,8 +2,8 @@
 ---
 
 <div style="display: flex; flex-direction: row;">
-  <canvas id="unit_circle" width="400" height="400"></canvas>
-  <div id="my_dataviz"></div>
+  <canvas id="unitCircle" width="400" height="400"></canvas>
+  <div id="nyquist"></div>
 </div>
 <button id="sweep">Sweep</button>
 <div style="display: flex; flex-direction: row;">
@@ -13,7 +13,7 @@
 
 <script is:inline src="https://cdn.plot.ly/plotly-2.17.1.min.js"></script>
 <script>
-  const canvas = document.getElementById("unit_circle") as HTMLCanvasElement;
+  const canvas = document.getElementById("unitCircle") as HTMLCanvasElement;
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
   const _canvasOffset = canvas.getBoundingClientRect();
   const offsetX = _canvasOffset.left;
@@ -39,6 +39,10 @@
     magnitude: number[];
     phase: number[];
   };
+
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const params = Object.fromEntries(urlSearchParams.entries());
+  console.log("params", params);
 
   let poles: ListOfCoordinates = [
     [0.7, 0],
@@ -240,7 +244,7 @@
     FrequencyResponseData.magnitude.push(nyquistMagnitude);
     FrequencyResponseData.phase.push(nyquistTheta);
 
-    (window as ExtendedWindow).Plotly.newPlot("my_dataviz", [
+    (window as ExtendedWindow).Plotly.newPlot("nyquist", [
       {
         x: FrequencyResponseData.x,
         y: FrequencyResponseData.y,
