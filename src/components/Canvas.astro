@@ -28,6 +28,13 @@
     typeof globalThis & {
       Plotly: any; // cba to add types
     };
+  type Data = {
+    x: number[];
+    y: number[];
+    frequency: number[];
+    magnitude: number[];
+    phase: number[];
+  };
 
   let poles: ListOfCoordinates = [
     [1, 0],
@@ -53,11 +60,12 @@
     }
   });
 
-  var NyquistTrace: Trace = {
+  let FrequencyResponseData: Data = {
     x: [],
     y: [],
-    mode: "markers",
-    type: "scatter",
+    frequency: [],
+    magnitude: [],
+    phase: [],
   };
 
   const unitCircleCentreX = 200;
@@ -168,7 +176,7 @@
       // calculate the length of the line
       const dx = -pole[0] + knobX;
       const dy = pole[1] - knobY;
-      const length = Math.sqrt(dx * dx + dy * dy);
+      const length = Math.sqrt(dx * dx + dy * dy) / unitCircleRadius;
       // calculate the angle between the line and the indicator
       const poleAngle = Math.atan2(dy, dx);
 
@@ -200,7 +208,7 @@
       // calculate the length of the line
       const dx = -zero[0] + knobX;
       const dy = zero[1] - knobY;
-      const length = Math.sqrt(dx * dx + dy * dy);
+      const length = Math.sqrt(dx * dx + dy * dy) / unitCircleRadius;
       // calculate the angle between the line and the indicator
       const zeroAngle = Math.atan2(dy, dx);
 
@@ -221,10 +229,21 @@
     const nyquistY = nyquistMagnitude * Math.sin(nyquistAngle);
     const nyquistTheta = -angle;
 
-    NyquistTrace.x.push(nyquistX);
-    NyquistTrace.y.push(nyquistY);
+    FrequencyResponseData.x.push(nyquistX);
+    FrequencyResponseData.y.push(nyquistY);
+    FrequencyResponseData.frequency.push(nyquistTheta);
+    FrequencyResponseData.magnitude.push(nyquistMagnitude);
+    FrequencyResponseData.phase.push(nyquistTheta);
 
-    (window as ExtendedWindow).Plotly.newPlot("my_dataviz", [NyquistTrace]);
+    (window as ExtendedWindow).Plotly.newPlot("my_dataviz", [
+      {
+        x: FrequencyResponseData.x,
+        y: FrequencyResponseData.y,
+        type: "scatter",
+        mode: "markers",
+        text: FrequencyResponseData.frequency,
+      } as Partial<Trace>,
+    ]);
   }
 
   function handleMouseDown(e: MouseEvent) {
