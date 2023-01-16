@@ -5,6 +5,7 @@
   <canvas id="unit_circle" width="400" height="400"></canvas>
   <div id="my_dataviz"></div>
 </div>
+<button id="sweep">Sweep</button>
 
 <script is:inline src="https://cdn.plot.ly/plotly-2.17.1.min.js"></script>
 <script>
@@ -21,7 +22,7 @@
     x: number[];
     y: number[];
     mode: "markers";
-    type: "scatter";
+    type: "scattergl" | "scatter";
   };
   type ExtendedWindow = Window &
     typeof globalThis & {
@@ -29,13 +30,28 @@
     };
 
   let poles: ListOfCoordinates = [
-    [0, 0.97],
-    [0.7, -0.1],
+    [1, 0],
+    [0, 0],
   ];
   let zeros: ListOfCoordinates = [
     [-1, 0],
     // [0, 0.5],
   ];
+
+  const magnitudeAndArg = (coord: Coordinate) => {
+    const [x, y] = coord;
+    const magnitude = Math.sqrt(x * x + y * y);
+    const arg = Math.atan2(y, x);
+    return [magnitude, arg];
+  };
+
+  // find the poles where the magnitude is > 0.8
+  let dangerAngles = poles.map((pole) => {
+    const [magnitude, arg] = magnitudeAndArg(pole);
+    if (magnitude > 0.8) {
+      return arg;
+    }
+  });
 
   var NyquistTrace: Trace = {
     x: [],
@@ -84,11 +100,10 @@
     }
   }
 
-  function DrawFrame(mouseX: number, mouseY: number) {
-    let angle = Math.atan2(
-      mouseY - unitCircleCentreY,
-      mouseX - unitCircleCentreX
-    );
+  function DrawFrame(mouseX: number, mouseY: number, angleOverride?: number) {
+    let angle =
+      angleOverride ||
+      Math.atan2(mouseY - unitCircleCentreY, mouseX - unitCircleCentreX);
 
     let poleCoords: ListOfCoordinates =
       poles.length > 0
@@ -168,8 +183,6 @@
       ctx.strokeStyle = "red";
       ctx.stroke();
 
-      console.log(poleAngle);
-
       nyquistAngle -= poleAngle;
 
       nyquistMagnitude /= length;
@@ -227,4 +240,43 @@
   });
   canvas.addEventListener("mousemove", (e) => down && handleMouseDown(e));
   canvas.addEventListener("mouseup", (e) => (down = false));
+  // if sweep button is clicked, sweep the knob
+
+  const sweepButton = document.getElementById("sweep") as HTMLButtonElement;
+  sweepButton.addEventListener("click", () => {
+    let angle = 0;
+
+    const interval = setInterval(() => {
+      let inDangerZone = false;
+
+      if (dangerAngles) {
+        let delta = 10000;
+        dangerAngles.forEach((a) => {
+          if (a !== undefined) {
+            let correctedAngle = angle;
+            if (Math.abs(angle) > Math.PI) {
+              correctedAngle = angle - Math.sign(angle) * 2 * Math.PI;
+            }
+
+            delta = Math.min(
+              delta,
+              Math.abs(Math.abs(correctedAngle) - Math.abs(a))
+            );
+          }
+        });
+
+        if (delta < 0.25) {
+          inDangerZone = true;
+        }
+      }
+      const increment = inDangerZone ? 0.005 : 0.05;
+
+      DrawFrame(0, 0, angle);
+      angle -= increment;
+      console.log(angle);
+      if (Math.abs(angle) > TwoPI) {
+        clearInterval(interval);
+      }
+    }, 0.0001);
+  });
 </script>
