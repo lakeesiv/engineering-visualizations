@@ -1,12 +1,21 @@
 ---
 ---
 
-<div style="display: flex; flex-direction: row;">
-  <canvas id="unitCircle" width="400" height="400"></canvas>
-  <div id="nyquist"></div>
+<div class="flex flex-row bg-slate-800 mb-4">
+  <div class="flex flex-col space-y-2 pb-4 m-8 bg-slate-700/80 rounded-xl">
+    <canvas class="" id="unitCircle" width="400" height="400"></canvas>
+    <p class="p-4 max-w-sm self-center">
+      Drag the slider on the unit circle to change the input frequency.
+      Alternatively, use the sweep button to sweep the frequency from 0 to 6pi
+    </p>
+    <button
+      class="bg-black rounded-md w-28 p-2 self-center hover:bg-slate-900 transition-colors"
+      id="sweep">Sweep</button
+    >
+  </div>
+  <div id="nyquist" class="m-8"></div>
 </div>
-<button id="sweep">Sweep</button>
-<div style="display: flex; flex-direction: row;">
+<div class="flex flex-col max-w-md max-h-4xl bg-slate-800">
   <div id="mag"></div>
   <div id="phase"></div>
 </div>
