@@ -122,7 +122,8 @@
 
   const complexNumberToCartesian = (complexNumber: [number, number]) => {
     const [mag, phase] = complexNumber;
-    return [mag * Math.cos(phase), mag * Math.sin(phase)] as Coordinate;
+    const p = (phase * Math.PI) / 180;
+    return [mag * Math.cos(p), mag * Math.sin(p)] as Coordinate;
   };
 
   const mapArrayToCartesian = (array: [number, number][] | []) => {
