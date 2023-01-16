@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.btn {
+		@apply inline-flex items-center justify-center rounded border border-transparent font-medium text-center text-base leading-snug transition py-3 px-6 shadow-lg ease-in duration-200 focus:ring-blue-500 focus:ring-offset-blue-200 focus:ring-2 focus:ring-offset-2;
+	}
+}
+
+
+
+::-webkit-scrollbar {
+	width: 20px;
+  }
+  
+::-webkit-scrollbar-track {
+background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+background-color: hsl(196, 15%, 86%);
+opacity: 20%;
+border-radius: 20px;
+border: 6px solid transparent;
+background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background-color: #a8bbbf;
+}
+
+::selection {
+	background: rgba(185, 28, 28, 0.6); 
+	opacity: 0.1;
+  }
+  ::-moz-selection {
+	background: #b91c1c; 
+  }

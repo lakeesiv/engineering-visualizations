@@ -1,0 +1,12 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Canvas from "../components/freq-response/Canvas.astro";
+import PoleZeroSelector from "../components/freq-response/PoleZeroSelector";
+---
+
+<Layout title="Z Frequency Response">
+  <main>
+    <PoleZeroSelector client:only />
+    <Canvas />
+  </main>
+</Layout>
