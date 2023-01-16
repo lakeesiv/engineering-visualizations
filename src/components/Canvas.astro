@@ -28,10 +28,13 @@
       Plotly: any; // cba to add types
     };
 
-  let poles: ListOfCoordinates = [[0, 0.5]];
+  let poles: ListOfCoordinates = [
+    [0, 0.97],
+    [0.7, -0.1],
+  ];
   let zeros: ListOfCoordinates = [
-    [0, 1],
-    [0, 0.5],
+    [-1, 0],
+    // [0, 0.5],
   ];
 
   var NyquistTrace: Trace = {
@@ -48,7 +51,7 @@
   const knobRadius = 5;
   const knobColor = "yellow";
 
-  DrawFrame(canvas.width / 2, 1); // just to get started
+  DrawFrame(unitCircleCentreX, unitCircleCentreY); // just to get started
 
   function DrawTargets(
     x: number,
@@ -66,16 +69,16 @@
         ctx.moveTo(x + width, y - width);
         ctx.lineTo(x - width, y + width);
         ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = color;
+        ctx.strokeStyle = "blue";
         ctx.stroke();
         break;
       case "Zero":
         ctx.beginPath();
         ctx.arc(x, y, width, 0, TwoPI, false);
-        ctx.fillStyle = color;
+        ctx.fillStyle = "red";
         ctx.fill();
         ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = color;
+        ctx.strokeStyle = "red";
         ctx.stroke();
         break;
     }
@@ -154,6 +157,19 @@
       // calculate the angle between the line and the indicator
       const poleAngle = Math.atan2(dy, dx);
 
+      // draw pole angle arc
+      ctx.beginPath();
+      ctx.arc(pole[0], pole[1], 20, 0, -poleAngle, poleAngle > 0);
+      ctx.moveTo(pole[0], pole[1]);
+      ctx.lineTo(pole[0] + 20, pole[1]);
+      ctx.stroke();
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "red";
+      ctx.stroke();
+
+      console.log(poleAngle);
+
       nyquistAngle -= poleAngle;
 
       nyquistMagnitude /= length;
@@ -166,7 +182,7 @@
       ctx.moveTo(zero[0], zero[1]);
       ctx.lineTo(knobX, knobY);
       ctx.lineWidth = 2;
-      ctx.strokeStyle = "red";
+      ctx.strokeStyle = "blue";
       ctx.stroke();
       // calculate the length of the line
       const dx = -zero[0] + knobX;
@@ -174,6 +190,12 @@
       const length = Math.sqrt(dx * dx + dy * dy);
       // calculate the angle between the line and the indicator
       const zeroAngle = Math.atan2(dy, dx);
+
+      ctx.beginPath();
+      ctx.arc(zero[0], zero[1], 20, 0, -zeroAngle, zeroAngle > 0);
+      ctx.moveTo(zero[0], zero[1]);
+      ctx.lineTo(zero[0] + 20, zero[1]);
+      ctx.stroke();
 
       nyquistAngle += zeroAngle;
 
