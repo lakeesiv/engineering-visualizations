@@ -2,57 +2,53 @@
 ---
 
 <div style="display: flex; flex-direction: row;">
-  <canvas id="canvas" width="400" height="400"></canvas>
+  <canvas id="unit_circle" width="400" height="400"></canvas>
   <div id="my_dataviz"></div>
 </div>
-<canvas id="canvas2" width="400" height="400"></canvas>
 
+<script is:inline src="https://cdn.plot.ly/plotly-2.17.1.min.js"></script>
 <script>
-  var canvas = document.getElementById("canvas");
-  var ctx = canvas.getContext("2d");
-  var canvasOffset = canvas.getBoundingClientRect();
-  var offsetX = canvasOffset.left;
-  var offsetY = canvasOffset.top;
-  var circleArc = Math.PI * 2;
+  const canvas = document.getElementById("unit_circle") as HTMLCanvasElement;
+  const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+  const _canvasOffset = canvas.getBoundingClientRect();
+  const offsetX = _canvasOffset.left;
+  const offsetY = _canvasOffset.top;
+  const TwoPI = Math.PI * 2;
 
-  var canvas2 = document.getElementById("canvas2");
-  var ctx2 = canvas2.getContext("2d");
-  var canvasOffset2 = canvas2.getBoundingClientRect();
-  var offsetX2 = canvasOffset2.left;
-  var offsetY2 = canvasOffset2.top;
+  type Coordinate = [number, number];
+  type ListOfCoordinates = Coordinate[];
+  type Trace = {
+    x: number[];
+    y: number[];
+    mode: "markers";
+    type: "scatter";
+  };
+  type ExtendedWindow = Window &
+    typeof globalThis & {
+      Plotly: any; // cba to add types
+    };
 
-  // draw axes on canvas2
-  ctx2.beginPath();
-  ctx2.moveTo(0, canvas2.height / 2);
-  ctx2.lineTo(canvas2.width, canvas2.height / 2);
-  ctx2.moveTo(canvas2.width / 2, 0);
-  ctx2.lineTo(canvas2.width / 2, canvas2.height);
-  ctx2.lineWidth = 2;
-  ctx2.strokeStyle = "black";
-  ctx2.stroke();
-
-  let poles = [[0, 0.5]];
-  let zeros = [
+  let poles: ListOfCoordinates = [[0, 0.5]];
+  let zeros: ListOfCoordinates = [
     [0, 1],
     [0, 0.5],
   ];
 
-  var trace1 = {
+  var NyquistTrace: Trace = {
     x: [],
     y: [],
     mode: "markers",
     type: "scatter",
   };
 
-  // drawing design properties
-  var knobCenterX = 200;
-  var knobCenterY = 200;
-  var knobRadius = 100;
-  var knobColor = "green";
-  var indicatorRadius = 5;
-  var indicatorColor = "yellow";
+  const unitCircleCentreX = 200;
+  const unitCircleCentreY = 200;
+  const unitCircleRadius = 100;
+  const unitCircleBorderColor = "black";
+  const knobRadius = 5;
+  const knobColor = "yellow";
 
-  Draw(canvas.width / 2, 1); // just to get started
+  DrawFrame(canvas.width / 2, 1); // just to get started
 
   function DrawTargets(
     x: number,
@@ -75,7 +71,7 @@
         break;
       case "Zero":
         ctx.beginPath();
-        ctx.arc(x, y, width, 0, circleArc, false);
+        ctx.arc(x, y, width, 0, TwoPI, false);
         ctx.fillStyle = color;
         ctx.fill();
         ctx.lineWidth = lineWidth;
@@ -85,42 +81,55 @@
     }
   }
 
-  function Draw(mouseX, mouseY) {
-    // given mousePosition, what is the nearest point on the knob
-    var rads = Math.atan2(mouseY - knobCenterY, mouseX - knobCenterX);
-    const angle = -rads;
-    let magnitude = 0;
+  function DrawFrame(mouseX: number, mouseY: number) {
+    let angle = Math.atan2(
+      mouseY - unitCircleCentreY,
+      mouseX - unitCircleCentreX
+    );
 
-    const poleCoords = poles.map((pole) => {
-      const x = pole[0] * knobRadius + knobCenterX;
-      const y = -pole[1] * knobRadius + knobCenterY;
-      return [x, y];
-    });
-    const zeroCoords =
-      zeros.map((zero) => {
-        const x = zero[0] * knobRadius + knobCenterX;
-        const y = -zero[1] * knobRadius + knobCenterY;
-        return [x, y];
-      }) || [];
+    let poleCoords: ListOfCoordinates =
+      poles.length > 0
+        ? poles.map((pole) => {
+            const x = pole[0] * unitCircleRadius + unitCircleCentreX;
+            const y = -pole[1] * unitCircleRadius + unitCircleCentreY; // cba to figure out why this is negative
+            return [x, y];
+          })
+        : [];
 
-    var indicatorX = knobRadius * Math.cos(rads) + knobCenterX;
-    var indicatorY = knobRadius * Math.sin(rads) + knobCenterY;
+    let zeroCoords: ListOfCoordinates =
+      zeros.length > 0
+        ? zeros.map((zero) => {
+            const x = zero[0] * unitCircleRadius + unitCircleCentreX;
+            const y = -zero[1] * unitCircleRadius + unitCircleCentreY;
+            return [x, y];
+          })
+        : [];
+
+    let knobX = unitCircleRadius * Math.cos(angle) + unitCircleCentreX;
+    let knobY = unitCircleRadius * Math.sin(angle) + unitCircleCentreY;
+
     // start drawing
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // draw knob
+    // draw circle
     ctx.beginPath();
-    ctx.arc(knobCenterX, knobCenterY, knobRadius, 0, circleArc, false);
-    ctx.fillStyle = "ivory";
-    ctx.fill();
+    ctx.arc(
+      unitCircleCentreX,
+      unitCircleCentreY,
+      unitCircleRadius,
+      0,
+      TwoPI,
+      false
+    );
+
     ctx.lineWidth = 2;
-    ctx.strokeStyle = knobColor;
+    ctx.strokeStyle = unitCircleBorderColor;
     ctx.stroke();
 
-    // draw indicator
+    // draw knob
     ctx.beginPath();
-    ctx.arc(indicatorX, indicatorY, indicatorRadius, 0, circleArc, false);
-    ctx.fillStyle = indicatorColor;
+    ctx.arc(knobX, knobY, knobRadius, 0, TwoPI, false);
+    ctx.fillStyle = knobColor;
     ctx.fill();
     ctx.lineWidth = 2;
     ctx.strokeStyle = "black";
@@ -134,13 +143,13 @@
       // draw a line from the pole to the indicator
       ctx.beginPath();
       ctx.moveTo(pole[0], pole[1]);
-      ctx.lineTo(indicatorX, indicatorY);
+      ctx.lineTo(knobX, knobY);
       ctx.lineWidth = 2;
       ctx.strokeStyle = "red";
       ctx.stroke();
       // calculate the length of the line
-      const dx = -pole[0] + indicatorX * 0.9999999;
-      const dy = pole[1] - indicatorY * 0.9999999;
+      const dx = -pole[0] + knobX;
+      const dy = pole[1] - knobY;
       const length = Math.sqrt(dx * dx + dy * dy);
       // calculate the angle between the line and the indicator
       const poleAngle = Math.atan2(dy, dx);
@@ -155,13 +164,13 @@
       // draw a line from the pole to the indicator
       ctx.beginPath();
       ctx.moveTo(zero[0], zero[1]);
-      ctx.lineTo(indicatorX, indicatorY);
+      ctx.lineTo(knobX, knobY);
       ctx.lineWidth = 2;
       ctx.strokeStyle = "red";
       ctx.stroke();
       // calculate the length of the line
-      const dx = -zero[0] + indicatorX * 0.9999999;
-      const dy = zero[1] - indicatorY * 0.9999999;
+      const dx = -zero[0] + knobX;
+      const dy = zero[1] - knobY;
       const length = Math.sqrt(dx * dx + dy * dy);
       // calculate the angle between the line and the indicator
       const zeroAngle = Math.atan2(dy, dx);
@@ -171,39 +180,26 @@
       nyquistMagnitude *= length;
     });
 
-    DrawTargets(knobCenterX, knobCenterY, "Zero", 2, 2, "blue");
+    DrawTargets(unitCircleCentreX, unitCircleCentreY, "Zero", 2, 2, "blue"); // draw the origin
 
-    // magnitude = p;
-
-    // draw the nyquist plot
     const nyquistX = nyquistMagnitude * Math.cos(nyquistAngle);
     const nyquistY = nyquistMagnitude * Math.sin(nyquistAngle);
-    const nyquistTheta = -rads;
+    const nyquistTheta = -angle;
 
-    trace1.x.push(nyquistX);
-    trace1.y.push(nyquistY);
+    NyquistTrace.x.push(nyquistX);
+    NyquistTrace.y.push(nyquistY);
 
-    function To3SigFig(num) {
-      return num.toPrecision(3);
-    }
-
-    console.log(`
-	 	${To3SigFig(nyquistMagnitude)}< ${To3SigFig(nyquistAngle)} rad \n
-		(${To3SigFig(nyquistX)},${To3SigFig(nyquistY)} )
-	`);
-
-    Plotly.newPlot("my_dataviz", [trace1]);
+    (window as ExtendedWindow).Plotly.newPlot("my_dataviz", [NyquistTrace]);
   }
 
-  function handleMouseDown(e) {
+  function handleMouseDown(e: MouseEvent) {
     let MouseX = e.clientX - offsetX;
     let MouseY = e.clientY - offsetY;
 
-    Draw(MouseX, MouseY);
+    DrawFrame(MouseX, MouseY);
   }
 
   let down = false;
-
   document.addEventListener("mousedown", (e) => {
     down = true;
   });
