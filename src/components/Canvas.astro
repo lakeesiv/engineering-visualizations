@@ -1,0 +1,169 @@
+---
+---
+
+<canvas id="canvas" width="800" height="800"></canvas>
+
+<script>
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+  var canvasOffset = canvas.getBoundingClientRect();
+  var offsetX = canvasOffset.left;
+  var offsetY = canvasOffset.top;
+  var circleArc = Math.PI * 2;
+  let poles = [
+    // [0.25, -0.25],
+    // [2 ** 0.5 / 2, 2 ** 0.5 / 2],
+    [0, -1],
+    // [0.0, 0.5],
+    // [-1, 0],
+  ];
+  let zeros = [[0, 1]];
+  //
+
+  // drawing design properties
+  var knobCenterX = 300;
+  var knobCenterY = 200;
+  var knobRadius = 100;
+  var knobColor = "green";
+  var indicatorRadius = 5;
+  var indicatorColor = "yellow";
+
+  Draw(canvas.width / 2, 1); // just to get started
+
+  function DrawTargets(
+    x: number,
+    y: number,
+    varient: "Pole" | "Zero",
+    width = 5,
+    lineWidth = 2,
+    color = "red"
+  ) {
+    switch (varient) {
+      case "Pole":
+        ctx.beginPath();
+        ctx.moveTo(x - width, y - width);
+        ctx.lineTo(x + width, y + width);
+        ctx.moveTo(x + width, y - width);
+        ctx.lineTo(x - width, y + width);
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        break;
+      case "Zero":
+        ctx.beginPath();
+        ctx.arc(x, y, width, 0, circleArc, false);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.lineWidth = lineWidth;
+        ctx.strokeStyle = color;
+        ctx.stroke();
+        break;
+    }
+  }
+
+  function Draw(mouseX, mouseY) {
+    // given mousePosition, what is the nearest point on the knob
+    var rads = Math.atan2(mouseY - knobCenterY, mouseX - knobCenterX);
+    const angle = -rads;
+    let magnitude = 0;
+
+    const poleCoords = poles.map((pole) => {
+      const x = pole[0] * knobRadius + knobCenterX;
+      const y = -pole[1] * knobRadius + knobCenterY;
+      return [x, y];
+    });
+    const zeroCoords = zeros.map((zero) => {
+      const x = zero[0] * knobRadius + knobCenterX;
+      const y = -zero[1] * knobRadius + knobCenterY;
+      return [x, y];
+    });
+
+    var indicatorX = knobRadius * Math.cos(rads) + knobCenterX;
+    var indicatorY = knobRadius * Math.sin(rads) + knobCenterY;
+    // start drawing
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // draw knob
+    ctx.beginPath();
+    ctx.arc(knobCenterX, knobCenterY, knobRadius, 0, circleArc, false);
+    ctx.fillStyle = "ivory";
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = knobColor;
+    ctx.stroke();
+
+    // draw indicator
+    ctx.beginPath();
+    ctx.arc(indicatorX, indicatorY, indicatorRadius, 0, circleArc, false);
+    ctx.fillStyle = indicatorColor;
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+
+    let nyquistMagnitude = 1;
+    let nyquistAngle = 0;
+
+    poleCoords.forEach((pole) => {
+      DrawTargets(pole[0], pole[1], "Pole");
+      // draw a line from the pole to the indicator
+      ctx.beginPath();
+      ctx.moveTo(pole[0], pole[1]);
+      ctx.lineTo(indicatorX, indicatorY);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "red";
+      ctx.stroke();
+      // calculate the length of the line
+      const dx = -pole[0] + indicatorX * 0.9999999;
+      const dy = pole[1] - indicatorY * 0.9999999;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      // calculate the angle between the line and the indicator
+      const poleAngle = Math.atan2(dy, dx);
+
+      nyquistAngle -= poleAngle;
+
+      nyquistMagnitude /= length;
+    });
+
+    zeroCoords.forEach((zero) => {
+      DrawTargets(zero[0], zero[1], "Zero");
+      // draw a line from the pole to the indicator
+      ctx.beginPath();
+      ctx.moveTo(zero[0], zero[1]);
+      ctx.lineTo(indicatorX, indicatorY);
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "red";
+      ctx.stroke();
+      // calculate the length of the line
+      const dx = -zero[0] + indicatorX * 0.9999999;
+      const dy = zero[1] - indicatorY * 0.9999999;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      // calculate the angle between the line and the indicator
+      const zeroAngle = Math.atan2(dy, dx);
+
+      nyquistAngle += zeroAngle;
+
+      nyquistMagnitude *= length;
+    });
+
+    DrawTargets(knobCenterX, knobCenterY, "Zero", 2, 2, "blue");
+
+    // magnitude = p;
+    console.log(nyquistMagnitude, nyquistAngle);
+  }
+
+  function handleMouseDown(e) {
+    let MouseX = e.clientX - offsetX;
+    let MouseY = e.clientY - offsetY;
+
+    Draw(MouseX, MouseY);
+  }
+
+  let down = false;
+
+  document.addEventListener("mousedown", (e) => {
+    down = true;
+  });
+  document.addEventListener("mousemove", (e) => down && handleMouseDown(e));
+  document.addEventListener("mouseup", (e) => (down = false));
+</script>
