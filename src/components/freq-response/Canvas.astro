@@ -6,7 +6,7 @@
     <canvas class="" id="unitCircle" width="400" height="400"></canvas>
     <p class="p-4 max-w-sm self-center">
       Drag the slider on the unit circle to change the input frequency.
-      Alternatively, use the sweep button to sweep the frequency from 0 to 6pi
+      Alternatively, use the sweep button to sweep the frequency from 0 to 6π
     </p>
     <button
       class="bg-black rounded-md w-28 p-2 self-center hover:bg-slate-900 transition-colors"
@@ -409,8 +409,13 @@
         }
       }
       const increment = inDangerZone ? 0.005 : 0.05;
+      let a = angle;
 
-      DrawFrame(0, 0, angle);
+      if (Math.abs(angle) > Math.PI) {
+        a = a - Math.sign(angle) * 2 * Math.PI;
+      }
+      DrawFrame(0, 0, a);
+
       angle -= increment;
       console.log(angle);
       if (Math.abs(angle) > TwoPI) {
