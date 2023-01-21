@@ -1,35 +1,28 @@
 ---
+import { Icon } from "astro-icon";
 ---
 
 <nav class="bg-b-800">
   <div class="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
     <div class="relative flex h-16 items-center justify-between">
-      <div class="flex items-center px-2 lg:px-0">
+      <div class="flex items-center px-2 lg:px-0 w-full">
         <div class="flex-shrink-0">
           <a
             href="https://www.lakeesiv.com/"
-            class="rounded-md px-3 py-2 text-sm font-semibold hover:scale-105 hover:text-gray-300 bg-red-800 hover:bg-red-700 transition-colors duration-500 text-white"
+            class="rounded-md px-3 py-2 text-sm font-semibold hover:text-gray-300 bg-red-800 hover:bg-red-700 transition-colors duration-500 text-white"
             >Lakee Sivaraya</a
           >
         </div>
-        <div class="hidden lg:ml-6 lg:block">
+        <a
+          href="/freq-response"
+          class="rounded-md px-3 py-2 transition-colors duration-500 text-sm font-medium text-white ml-4 hover:text-gray-300 bg-b-900 border-2 border-gray-800 border-opacity-90 hover:border-opacity-100"
+          >Z Frequency Response</a
+        >
+        <div class="justify-self-end ml-auto">
           <div class="flex space-x-4">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a
-              href="https://github.com/lakeesiv"
-              class="rounded-md px-3 py-2 text-sm font-medium text-white"
-              >Github</a
-            >
-          </div>
-        </div>
-        <div class="hidden lg:ml-6 lg:block">
-          <div class="flex space-x-4">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <a
-              href="/freq-response"
-              class="rounded-md px-3 py-2 text-sm font-medium text-white"
-              >Z Frequency Response</a
-            >
+            <a href="https://github.com/lakeesiv">
+              <Icon name="mdi:github" class="w-8" />
+            </a>
           </div>
         </div>
       </div>
