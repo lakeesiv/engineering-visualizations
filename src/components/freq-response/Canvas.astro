@@ -1,8 +1,8 @@
 ---
 ---
 
-<div class="flex flex-row bg-slate-800 mb-4">
-  <div class="flex flex-col space-y-2 pb-4 m-8 bg-slate-700/80 rounded-xl">
+<div class="flex flex-row mb-4">
+  <div class="flex flex-col space-y-2 pb-4 m-8 bg-b-800/80 rounded-xl">
     <canvas class="" id="unitCircle" width="400" height="400"></canvas>
     <p class="p-4 max-w-sm self-center">
       Drag the slider on the unit circle to change the input frequency.
@@ -15,8 +15,8 @@
   </div>
   <div id="nyquist" class="m-8 bg-black"></div>
 </div>
-<div class="flex flex-row bg-slate-800 mb-4">
-  <div class="flex flex-col space-y-2 pb-4 m-8 bg-slate-700/80 rounded-xl">
+<div class="flex flex-row mb-4">
+  <div class="flex flex-col space-y-2 pb-4 m-8 bg-b-800/80 rounded-xl">
     <h2 class="p-2 font-semibold max-w-sm self-center">How it works</h2>
     <p class="p-2 max-w-sm self-center">
       This is a very simple implementation of using the poles and zeros of a
@@ -35,15 +35,8 @@
       Another limitation is I made this in a few hours so it is not very robust
       / well written / designed.
     </p>
-    <a
-      class="p-2 max-w-sm self-center"
-      href="https://github.com/lakeesiv/engineering-visualizations"
-      target="_blank"
-      rel="noopener noreferrer"
-      >github.com/lakeesiv/engineering-visualizations</a
-    >
   </div>
-  <div class="flex flex-col gap-3 bg-slate-800 ml-8">
+  <div class="flex flex-col gap-3 ml-8">
     <div id="mag" class="m-4"></div>
     <div id="phase" class="m-4"></div>
   </div>
@@ -162,7 +155,7 @@
   const unitCircleCentreX = 200;
   const unitCircleCentreY = 200;
   const unitCircleRadius = 150;
-  const unitCircleBorderColor = "black";
+  const unitCircleBorderColor = "gray";
   const knobRadius = 8;
   const knobColor = "pink";
 
