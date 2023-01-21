@@ -89,18 +89,19 @@ const PoleZeroSelector = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-slate-600 p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-medium leading-6 text-gray-300"
-                  >
-                    Add/Edit Pole/Zero
-                  </Dialog.Title>
+                <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-b-800 p-6 text-left align-middle shadow-xl transition-all">
                   <div className="mt-2">
-                    <h1 className="text-xl font-bold text-gray-200">Poles</h1>
+                    {freqResponseConfig.poles.length > 0 && (
+                      <>
+                        <h1 className="text-xl font-bold text-gray-200">
+                          Poles
+                        </h1>
+                        <hr className="my-1 border-gray-700 opacity-80" />
+                      </>
+                    )}
                     {freqResponseConfig.poles.map((pole, index) => (
                       <div
-                        className="flex flex-row gap-3 items-center"
+                        className="flex flex-row gap-3 items-center my-2"
                         key={index}
                       >
                         <p>Mag</p>
@@ -162,7 +163,14 @@ const PoleZeroSelector = () => {
                         </button>
                       </div>
                     ))}
-                    <h1 className="text-xl font-bold text-gray-200">Zeros</h1>
+                    {freqResponseConfig.zeros.length > 0 && (
+                      <>
+                        <h1 className="text-xl font-bold text-gray-200">
+                          Zeros
+                        </h1>
+                        <hr className="my-1 border-gray-700 opacity-80" />
+                      </>
+                    )}
 
                     {freqResponseConfig.zeros.map((zero, index) => (
                       <div
