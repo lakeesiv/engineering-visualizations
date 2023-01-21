@@ -62,7 +62,7 @@
   type Trace = {
     x: number[];
     y: number[];
-    mode: "lines+markers";
+    mode: "markers";
     type: "scattergl" | "scatter";
     text: string[] | number[];
   };
@@ -330,7 +330,7 @@
         x: FrequencyResponseData.x,
         y: FrequencyResponseData.y,
         type: "scatter",
-        mode: "lines+markers",
+        mode: "markers",
         text: FrequencyResponseData.frequency,
       },
       {
@@ -346,7 +346,7 @@
         x: FrequencyResponseData.frequency,
         y: FrequencyResponseData.magnitude,
         type: "scatter",
-        mode: "lines+markers",
+        mode: "markers",
         text: FrequencyResponseData.frequency,
       },
       {
@@ -361,7 +361,7 @@
         x: FrequencyResponseData.frequency,
         y: FrequencyResponseData.phase,
         type: "scatter",
-        mode: "lines+markers",
+        mode: "markers",
         text: FrequencyResponseData.frequency,
       },
       {
