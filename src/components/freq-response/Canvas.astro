@@ -6,8 +6,8 @@
     <canvas class="" id="unitCircle" width="400" height="400"></canvas>
     <p class="p-4 max-w-sm self-center">
       Drag the slider on the unit circle to change the input frequency.
-      Alternatively, use the sweep button to sweep the frequency from \(-3\pi \)
-      to \(3\pi \)
+      Alternatively, use the sweep button to sweep the frequency from \(-\pi \)
+      to \(\pi \)
     </p>
     <button
       class="bg-black rounded-md w-28 p-2 self-center hover:bg-b-900 transition-colors"
@@ -62,7 +62,7 @@
   type Trace = {
     x: number[];
     y: number[];
-    mode: "markers";
+    mode: "lines+markers";
     type: "scattergl" | "scatter";
     text: string[] | number[];
   };
@@ -330,7 +330,7 @@
         x: FrequencyResponseData.x,
         y: FrequencyResponseData.y,
         type: "scatter",
-        mode: "markers",
+        mode: "lines+markers",
         text: FrequencyResponseData.frequency,
       },
       {
@@ -346,11 +346,11 @@
         x: FrequencyResponseData.frequency,
         y: FrequencyResponseData.magnitude,
         type: "scatter",
-        mode: "markers",
+        mode: "lines+markers",
         text: FrequencyResponseData.frequency,
       },
       {
-        x: "Theta",
+        x: "Frequency (rad)",
         y: "Magnitude",
         title: "Magnitude Plot",
       }
@@ -361,12 +361,12 @@
         x: FrequencyResponseData.frequency,
         y: FrequencyResponseData.phase,
         type: "scatter",
-        mode: "markers",
+        mode: "lines+markers",
         text: FrequencyResponseData.frequency,
       },
       {
-        x: "Theta",
-        y: "Phase",
+        x: "Frequency (rad)",
+        y: "Phase (Deg)",
         title: "Phase Plot",
       }
     );
