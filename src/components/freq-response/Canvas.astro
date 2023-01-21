@@ -9,7 +9,7 @@
       Alternatively, use the sweep button to sweep the frequency from 0 to 6π
     </p>
     <button
-      class="bg-black rounded-md w-28 p-2 self-center hover:bg-slate-900 transition-colors"
+      class="bg-black rounded-md w-28 p-2 self-center hover:bg-b-900 transition-colors"
       id="sweep">Sweep</button
     >
   </div>
@@ -17,8 +17,10 @@
 </div>
 <div class="flex flex-row mb-4">
   <div class="flex flex-col space-y-2 pb-4 m-8 bg-b-800/80 rounded-xl">
-    <h2 class="p-2 font-semibold max-w-sm self-center">How it works</h2>
-    <p class="p-2 max-w-sm self-center">
+    <h2 class="p-2 mt-2 font-semibold text-2xl max-w-sm self-center">
+      How it works
+    </h2>
+    <p class="px-6 max-w-sm self-center text-gray-300">
       This is a very simple implementation of using the poles and zeros of a
       transfer function to graphically plot the frequency response of a system.
       It uses the fact that the magnitude is equal to product of the distances
@@ -26,8 +28,11 @@
       poles to the slider. The phase is equal to the sum of the angles of all
       zeros minuts the sum of the angles of all poles.
     </p>
-    <h2 class="p-2 font-semibold max-w-sm self-center">Limitations</h2>
-    <p class="p-2 max-w-sm self-center">
+    <hr class="mx-6 text-gray-300 opacity-60 my-2" />
+    <h2 class="p-2 mt-2 font-semibold text-2xl max-w-sm self-center">
+      Limitations
+    </h2>
+    <p class="px-6 max-w-sm self-center text-gray-300">
       When there are repeated poles the plotting is not perfect. Additionally if
       the poles are too close to the unit circle then you will get a large
       magnitude response, hence you will need to zoom into the plot to see the
