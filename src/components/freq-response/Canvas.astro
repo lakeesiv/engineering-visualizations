@@ -315,7 +315,7 @@
     FrequencyResponseData.y.push(nyquistY);
     FrequencyResponseData.frequency.push(nyquistTheta);
     FrequencyResponseData.magnitude.push(nyquistMagnitude);
-    FrequencyResponseData.phase.push(nyquistAngle);
+    FrequencyResponseData.phase.push(nyquistAngle * (180 / Math.PI));
 
     Plot(
       "nyquist",
