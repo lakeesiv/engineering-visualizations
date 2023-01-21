@@ -62,7 +62,7 @@
   type Trace = {
     x: number[];
     y: number[];
-    mode: "markers";
+    mode: "markers" | "lines+markers";
     type: "scattergl" | "scatter";
     text: string[] | number[];
   };
@@ -199,6 +199,8 @@
   }
 
   function DrawFrame(mouseX: number, mouseY: number, angleOverride?: number) {
+    angleOverride && console.log("angleOverride", angleOverride);
+
     let angle =
       angleOverride ||
       Math.atan2(mouseY - unitCircleCentreY, mouseX - unitCircleCentreX);
@@ -330,7 +332,7 @@
         x: FrequencyResponseData.x,
         y: FrequencyResponseData.y,
         type: "scatter",
-        mode: "markers",
+        mode: "lines+markers",
         text: FrequencyResponseData.frequency,
       },
       {
@@ -389,7 +391,7 @@
 
   const sweepButton = document.getElementById("sweep") as HTMLButtonElement;
   sweepButton.addEventListener("click", () => {
-    let angle = 0;
+    let angle = -0.005;
 
     const interval = setInterval(() => {
       let inDangerZone = false;
@@ -414,16 +416,17 @@
           inDangerZone = true;
         }
       }
+
       const increment = inDangerZone ? 0.005 : 0.05;
       let a = angle;
 
       if (Math.abs(angle) > Math.PI) {
         a = a - Math.sign(angle) * 2 * Math.PI;
       }
-      DrawFrame(0, 0, a);
-
       angle -= increment;
       console.log(angle);
+      DrawFrame(0, 0, a);
+
       if (Math.abs(angle) > TwoPI) {
         clearInterval(interval);
       }
