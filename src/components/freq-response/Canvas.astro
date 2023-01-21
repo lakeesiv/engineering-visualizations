@@ -14,7 +14,11 @@
       id="sweep">Sweep</button
     >
   </div>
-  <div id="nyquist" class="m-8 bg-black"></div>
+  <div
+    class="m-8 p-4 bg-black rounded-lg border-2 border-gray-800 border-opacity-60"
+  >
+    <div id="nyquist" class="w-full h-full"></div>
+  </div>
 </div>
 <div class="flex flex-row mb-4">
   <div class="flex flex-col space-y-2 pb-4 m-8 bg-b-800/80 rounded-xl">
@@ -43,8 +47,16 @@
     </p>
   </div>
   <div class="flex flex-col gap-3 ml-8">
-    <div id="mag" class="m-4"></div>
-    <div id="phase" class="m-4"></div>
+    <div
+      class="m-8 p-4 bg-black rounded-lg border-2 border-gray-800 border-opacity-60"
+    >
+      <div id="mag" class="w-full h-full"></div>
+    </div>
+    <div
+      class="m-8 p-4 bg-black rounded-lg border-2 border-gray-800 border-opacity-60"
+    >
+      <div id="phase" class="w-full h-full"></div>
+    </div>
   </div>
 </div>
 
@@ -92,14 +104,15 @@
       title: labels.title,
       xaxis: {
         title: labels.x,
-        color: "white",
+        color: "#cccccc",
       },
       yaxis: {
         title: labels.y,
-        color: "white",
+        color: "#cccccc",
       },
       font: {
-        color: "white",
+        color: "#cccccc",
+        family: "DM Sans, sans-serif",
       },
       margin: { l: 50, r: 50, b: 50, t: 50 },
 
@@ -108,7 +121,10 @@
     };
     const _window = window as ExtendedWindow;
     _window.Plotly.newPlot(divId, [data], _layout, {
+      responsive: true,
       displayLogo: false,
+      displayModeBar: false,
+      modeBarButtonsToRemove: ["lasso2d"],
     });
   }
 
