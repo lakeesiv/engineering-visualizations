@@ -198,7 +198,7 @@ const PoleZeroSelector = () => {
 
                     {freqResponseConfig.zeros.map((zero, index) => (
                       <div
-                        className="flex flex-row gap-3 items-center"
+                        className="flex flex-row gap-3 items-center my-2"
                         key={index}
                       >
                         <p>Mag</p>
