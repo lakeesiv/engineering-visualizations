@@ -185,6 +185,25 @@ const PoleZeroSelector = () => {
                         >
                           X
                         </button>
+                        <button
+                          type="button"
+                          className="inline-flex justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-sm font-medium  hover:bg-blue-600 "
+                          onClick={() => {
+                            setFreqResponseConfig((prev) => {
+                              const newPoles = [...prev.poles];
+                              newPoles.push([
+                                newPoles[index][0],
+                                -newPoles[index][1],
+                              ]);
+                              return {
+                                ...prev,
+                                poles: newPoles,
+                              };
+                            });
+                          }}
+                        >
+                          Add Conjugate
+                        </button>
                       </div>
                     ))}
                     {freqResponseConfig.zeros.length > 0 && (
