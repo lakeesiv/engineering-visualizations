@@ -2,6 +2,7 @@
 interface Props {
   title: string;
   slug: string;
+  description: string;
 }
 
 const props = Astro.props;
@@ -9,8 +10,19 @@ const props = Astro.props;
 
 <a href={"/" + props.slug}>
   <div
-    class="w-96 bg-b-800 hover:bg-opacity-80 border-2 border-red-700 first-letter: hover:border-red-600 hover:shadow-2xl rounded-xl transition-opacity p-8 font-large"
+    class="w-96 bg-b-800 group hover:bg-opacity-80 hover:shadow-2xl rounded-xl transition-opacity p-8"
   >
-    <h2>{props.title}</h2>
+    <h2
+      class="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-red-700"
+    >
+      {props.title}
+    </h2>
+    {
+      props.description && (
+        <p class="text-gray-400 mt-2 group-hover:text-gray-400/80 transition-colors duration-500  text-opacity-75">
+          {props.description}
+        </p>
+      )
+    }
   </div>
 </a>
