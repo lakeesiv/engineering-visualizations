@@ -26,12 +26,12 @@
 
 <div class="flex flex-row w-full place-content-evenly">
   <div
-    class="max-w-6xl p-2 bg-black rounded-lg border-2 border-gray-800 border-opacity-60"
+    class="w-[38rem] p-2 bg-black rounded-lg border-2 border-gray-800 border-opacity-60"
   >
     <div id="mag" class="w-full h-full bg-red-500"></div>
   </div>
   <div
-    class="max-w-6xl p-2 bg-black rounded-lg border-2 border-gray-800 border-opacity-60"
+    class="w-[38rem] p-2 bg-black rounded-lg border-2 border-gray-800 border-opacity-60"
   >
     <div id="phase" class="w-full h-full bg-red-500"></div>
   </div>
@@ -77,7 +77,6 @@
   </div>
 </div> -->
 
-<script is:inline src="https://cdn.plot.ly/plotly-2.17.1.min.js"></script>
 <script>
   const canvas = document.getElementById("unitCircle") as HTMLCanvasElement;
   const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -372,7 +371,7 @@
         x: FrequencyResponseData.x,
         y: FrequencyResponseData.y,
         type: "scatter",
-        mode: "lines+markers",
+        mode: "markers",
         text: FrequencyResponseData.frequency,
       },
       {
@@ -408,7 +407,7 @@
       },
       {
         x: "Frequency (rad)",
-        y: "Phase (Deg)",
+        y: "Phase (deg)",
         title: "Phase Plot",
       }
     );
