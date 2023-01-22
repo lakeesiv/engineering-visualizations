@@ -1,7 +1,7 @@
 ---
 ---
 
-<div class="flex flex-row mb-4">
+<div class="flex-row mb-4 hidden" id="nyquistVisual">
   <div class="flex flex-col space-y-2 pb-4 m-8 bg-b-800/80 rounded-xl">
     <canvas class="" id="unitCircle" width="400" height="400"></canvas>
     <p class="p-4 max-w-sm self-center">
@@ -20,7 +20,21 @@
     <div id="nyquist" class="w-full h-full"></div>
   </div>
 </div>
-<div class="flex flex-row mb-4">
+
+<div class="flex flex-row w-full place-content-evenly">
+  <div
+    class="max-w-6xl p-2 bg-black rounded-lg border-2 border-gray-800 border-opacity-60"
+  >
+    <div id="mag" class="w-full h-full bg-red-500"></div>
+  </div>
+  <div
+    class="max-w-6xl p-2 bg-black rounded-lg border-2 border-gray-800 border-opacity-60"
+  >
+    <div id="phase" class="w-full h-full bg-red-500"></div>
+  </div>
+</div>
+
+<!-- <div class="flex flex-row mb-4">
   <div class="flex flex-col space-y-2 pb-4 m-8 bg-b-800/80 rounded-xl">
     <h2 class="p-2 mt-2 font-semibold text-2xl max-w-sm self-center">
       How it works
@@ -58,7 +72,7 @@
       <div id="phase" class="w-full h-full"></div>
     </div>
   </div>
-</div>
+</div> -->
 
 <script is:inline src="https://cdn.plot.ly/plotly-2.17.1.min.js"></script>
 <script>
@@ -133,7 +147,14 @@
     Object.fromEntries(urlSearchParams.entries()).config
   );
 
-  console.log(config.zeros);
+  if (config.poles.length > 0 || config.zeros.length > 0) {
+    const nyquistVisual = document.getElementById(
+      "nyquistVisual"
+    ) as HTMLDivElement;
+    nyquistVisual.style.display = "flex";
+
+    // no poles or zeros
+  }
 
   const complexNumberToCartesian = (complexNumber: [number, number]) => {
     const [mag, phase] = complexNumber;
