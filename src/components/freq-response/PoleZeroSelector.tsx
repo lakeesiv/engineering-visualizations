@@ -54,13 +54,37 @@ const PoleZeroSelector = () => {
 
   return (
     <>
-      <div className="w-full grid place-items-center pt-2">
+      <div className="grid w-full place-items-center">
         <button
-          type="button"
+          className="w-96 my-3 hover:scale-105 transition-transform"
           onClick={openModal}
-          className=" bg-black text-2xl  px-4text-sm font-medium text-white hover:bg-opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 w-[80%] py-8 rounded-2xl"
         >
-          Add/Edit Pole/Zero
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div className="rounded-lg bg-b-800 border-2 border-gray-800 p-2 shadow-lg sm:p-3">
+              <div className="flex flex-wrap items-center justify-between">
+                <div className="flex w-0 flex-1 items-center">
+                  <span className="flex rounded-lg bg-b-900 p-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                    >
+                      {" "}
+                      <path
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"
+                        fill="white"
+                      ></path>{" "}
+                    </svg>
+                  </span>
+                  <p className="ml-3 font-medium text-white">
+                    Add/Edit Poles and Zeros
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </button>
       </div>
 
