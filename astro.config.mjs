@@ -13,9 +13,6 @@ import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
-import compress from "astro-compress";
-
-// https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), react(), partytown(), sitemap(), compress()]
+  integrations: [tailwind(), react(), partytown(), sitemap()]
 });

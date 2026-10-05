@@ -144,9 +144,17 @@
   }
 
   const urlSearchParams = new URLSearchParams(window.location.search);
-  const config = JSON.parse(
-    Object.fromEntries(urlSearchParams.entries()).config
-  );
+  let config: { poles: [number, number][]; zeros: [number, number][] };
+  try {
+    const parsed = JSON.parse(urlSearchParams.get("config") || "{}");
+    config = {
+      poles: Array.isArray(parsed.poles) ? parsed.poles : [],
+      zeros: Array.isArray(parsed.zeros) ? parsed.zeros : [],
+    };
+  } catch (e) {
+    console.error("Invalid config query param", e);
+    config = { poles: [], zeros: [] };
+  }
 
   if (config.poles.length > 0 || config.zeros.length > 0) {
     const nyquistVisual = document.getElementById(
